@@ -8,7 +8,8 @@ import Grid from '@material-ui/core/Grid'
 class Signin extends Component {
     state = {
         password : '',
-        email : ''
+        email : '',
+        error: ''
     }
 
     handleEmailChange = (event) => {
@@ -25,7 +26,7 @@ class Signin extends Component {
           }).catch(function(error) {
          
              console.log(error) 
-               
+              that.setState({error: error.message}) 
              console.log('hello from error')
 
             return   
@@ -42,7 +43,9 @@ class Signin extends Component {
 
           <Textfield label='email' type='text' value={this.state.email} handleChange ={this.handleEmailChange} />
           <Textfield label='password' type='password' value={this.state.password} handleChange ={this.handlePasswordChange} />
+          <p>{this.state.error} </p>
           <Button handleClick={this.handleSignin} label='Sign in' />
+        
           <Link to='signup'> Sign up </Link>
 
         </Grid>

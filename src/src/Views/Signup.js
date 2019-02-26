@@ -9,7 +9,8 @@ import Grid from '@material-ui/core/Grid'
 class Signup extends Component {
     state = {
         password : '',
-        email : ''
+        email : '',
+        error:''
     }
 
     handleEmailChange = (event) => {
@@ -17,10 +18,12 @@ class Signup extends Component {
         console.log(this.state.email)
     }
     handleSignup = () => {
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+      let that=this
+        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(()=>{
+          that.setState({error:''})
+        }).catch(function(error) {
             // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
+            that.setState({error: error.message}) 
             // ...
           });
     }
@@ -33,6 +36,7 @@ class Signup extends Component {
       
           <Textfield label='email' type='text' value={this.state.email} handleChange ={this.handleEmailChange} />
           <Textfield label='password' type='password' value={this.state.password} handleChange ={this.handlePasswordChange} />
+          <p>{this.state.error} </p>
           <Button handleClick={this.handleSignup} label='Sign up' />
           <Link to='signin'> Sign in </Link>
       </Grid>
